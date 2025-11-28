@@ -17,9 +17,10 @@ import java.security.NoSuchAlgorithmException;
 public class FileStorageService {
 
     @Value("${app.upload.dir:/opt/update-server/downloads}")
+//    @Value("${app.upload.dir:\\Users\\Mohamed\\Downloads}")
     private String uploadDir;
 
-    @Value("${app.server.url:http://localhost:8080}")
+    @Value("${app.server.url:http://164.92.230.242:8080}")
     private String serverUrl;
 
     public String storeFile(MultipartFile file, String version) throws IOException {
