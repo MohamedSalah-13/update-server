@@ -44,7 +44,9 @@ public class FileStorageService {
 
     public String getFileUrl(String fileName) {
         return serverUrl + "/downloads/" + fileName;
+
     }
+
 
     public String calculateChecksum(MultipartFile file) throws IOException, NoSuchAlgorithmException {
         MessageDigest digest = MessageDigest.getInstance("SHA-256");
