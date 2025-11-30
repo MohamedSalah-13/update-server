@@ -18,6 +18,11 @@ public class UpdateController {
     private final UpdateService updateService;
     private final StatisticsService statisticsService;
 
+    @GetMapping
+    public ResponseEntity<String> welcome() {
+        return ResponseEntity.ok("Welcome to the update server!");
+    }
+
     @GetMapping("/version")
     public ResponseEntity<UpdateInfo> checkForUpdates(
             @RequestParam String clientId,
