@@ -9,5 +9,6 @@ import lombok.Setter;
 @AllArgsConstructor
  public class GenerateKeyResponse {
     private String activationKey;
+    private Boolean isTrial;
     private String message;
 }
