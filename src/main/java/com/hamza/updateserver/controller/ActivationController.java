@@ -27,6 +27,7 @@ public class ActivationController {
         activation.setIsUsed(true);
         activation.setActivationDate(LocalDateTime.now());
         activation.setMachineId(request.getMachineId());
+        activation.setMacAddress(request.getMacAddress());
         activation.setCustomerEmail(request.getCustomerEmail());
         activationService.save(activation);
         return ResponseEntity.ok(new ActivationResponse(true, "Activation successful"));

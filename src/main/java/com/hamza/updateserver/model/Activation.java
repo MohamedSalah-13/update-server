@@ -21,8 +21,11 @@ public class Activation {
     @Column(unique = true, nullable = false, length = 50)
     private String activationKey;
 
-    @Column(length = 100)
+    @Column(unique = true, nullable = false, length = 100)
     private String machineId;
+
+    @Column(unique = true, nullable = false, length = 100)
+    private String macAddress;
 
     @Column
     private Boolean isUsed = false;
