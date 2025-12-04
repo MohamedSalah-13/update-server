@@ -71,5 +71,11 @@ public class ActivationController {
     public ResponseEntity<Iterable<Activation>> allActivations() {
         return ResponseEntity.ok(activationService.allActivations());
     }
+
+    @GetMapping("/activations/{machine_id}")
+    public ResponseEntity<Activation> findByMachineId(@PathVariable String machine_id) {
+        return ResponseEntity.ok(activationService.findByMachineId(machine_id).orElse(null));
+    }
+
 }
 
