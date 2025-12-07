@@ -24,20 +24,20 @@ public class ActivationController {
         var byMachineId = activationService.findByMachineId(request.getMachineId());
         if (byMachineId.isPresent()) {
             return ResponseEntity.badRequest()
-                    .body(new ActivationResponse(false, "Activation key is already used"));
+                    .body(new ActivationResponse(false, "Activation key is already used", request.getActivationKey()));
         }
 
         Activation activation = new Activation();
         activation.setActivationKey(request.getActivationKey());
         activation.setExpirationDate(LocalDateTime.now().plusMonths(1));
         activation.setIsUsed(true);
-
+        activation.setIsTrial(request.isTrial());
         activation.setActivationDate(LocalDateTime.now());
         activation.setMachineId(request.getMachineId());
         activation.setMacAddress(request.getMacAddress());
         activation.setCustomerEmail(request.getCustomerEmail());
         activationService.save(activation);
-        return ResponseEntity.ok(new ActivationResponse(true, "Activation successful"));
+        return ResponseEntity.ok(new ActivationResponse(true, "Activation successful", request.getActivationKey()));
 
     }
 
@@ -46,7 +46,7 @@ public class ActivationController {
         // Validate activation key
         if (request.getActivationKey() == null || request.getActivationKey().isEmpty()) {
             return ResponseEntity.badRequest()
-                    .body(new ActivationResponse(false, "Activation key is required"));
+                    .body(new ActivationResponse(false, "Activation key is required", request.getActivationKey()));
         }
 
         Activation activation = new Activation();
@@ -59,7 +59,7 @@ public class ActivationController {
 //        activation.setMacAddress(request.getMacAddress());
 //        activation.setCustomerEmail(request.getCustomerEmail());
         activationService.update(activation);
-        return ResponseEntity.ok(new ActivationResponse(true, "Activation successful"));
+        return ResponseEntity.ok(new ActivationResponse(true, "Activation successful", request.getActivationKey()));
     }
 
     @GetMapping(value = "/hello")
