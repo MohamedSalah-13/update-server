@@ -20,46 +20,64 @@ public class ActivationController {
     @PostMapping("/activate")
     public ResponseEntity<ActivationResponse> activate(@RequestBody ActivationRequest request) {
 
-        // Check if key exists and is not used
-        var byMachineId = activationService.findByMachineId(request.getMachineId());
-        if (byMachineId.isPresent()) {
-            return ResponseEntity.badRequest()
-                    .body(new ActivationResponse(false, "Activation key is already used", request.getActivationKey()));
+        var trial = request.isTrial();
+        // إذا لم تكن نسخة تجريبية يتم البحث عن البيانات
+        if (!trial) {
+            // Check if key exists and is not used
+            var byMachineId = activationService.findByMachineId(request.getMachineId());
+            if (byMachineId.isPresent()) {
+                var activation = byMachineId.get();
+                if (activation.getActivationKey().equals(request.getActivationKey()) && activation.getMachineId().equals(request.getMachineId()))
+                    return ResponseEntity.badRequest()
+                            .body(new ActivationResponse(false, "Activation key is already used"));
+            }
         }
+
 
         Activation activation = new Activation();
         activation.setActivationKey(request.getActivationKey());
         activation.setExpirationDate(LocalDateTime.now().plusMonths(1));
         activation.setIsUsed(true);
-        activation.setIsTrial(request.isTrial());
+
+        activation.setIsTrial(trial);
         activation.setActivationDate(LocalDateTime.now());
         activation.setMachineId(request.getMachineId());
         activation.setMacAddress(request.getMacAddress());
         activation.setCustomerEmail(request.getCustomerEmail());
         activationService.save(activation);
-        return ResponseEntity.ok(new ActivationResponse(true, "Activation successful", request.getActivationKey()));
+        return ResponseEntity.ok(new ActivationResponse(true, "Activation successful"));
 
     }
 
+
+    /**
+     * Updates the activation information for a machine ID based on the provided request data.
+     * Validates the activation key and checks for an existing activation entry before updating.
+     * يستخدم فى حالة إذا كان هذا الجهاز سبق له عمل نسخة تجريببة ويتم عمل تحديث بياناته او تفعيل البرنامج
+     *
+     * @param request the activation details containing the activation key, machine ID, and trial status
+     * @return a ResponseEntity containing an ActivationResponse indicating the success or failure of the update
+     */
     @PutMapping(value = "/update")
     public ResponseEntity<ActivationResponse> update(@RequestBody Activation request) {
         // Validate activation key
-        if (request.getActivationKey() == null || request.getActivationKey().isEmpty()) {
+        if (request.getActivationKey() == null || request.getActivationKey().trim().isEmpty()) {
             return ResponseEntity.badRequest()
-                    .body(new ActivationResponse(false, "Activation key is required", request.getActivationKey()));
+                    .body(new ActivationResponse(false, "Activation key cannot be empty or null"));
+        }
+
+
+        var byMachineId = activationService.findByMachineId(request.getMachineId());
+        if (byMachineId.isEmpty()) {
+            return ResponseEntity.badRequest()
+                    .body(new ActivationResponse(false, "No activation found for this machine id"));
         }
 
         Activation activation = new Activation();
         activation.setActivationKey(request.getActivationKey());
-//        activation.setExpirationDate(LocalDateTime.now().plusMonths(1));
-//        activation.setIsUsed(true);
-        activation.setIsTrial(request.getIsTrial());
-//        activation.setActivationDate(LocalDateTime.now());
-//        activation.setMachineId(request.getMachineId());
-//        activation.setMacAddress(request.getMacAddress());
-//        activation.setCustomerEmail(request.getCustomerEmail());
+        activation.setIsTrial(false);
         activationService.update(activation);
-        return ResponseEntity.ok(new ActivationResponse(true, "Activation successful", request.getActivationKey()));
+        return ResponseEntity.ok(new ActivationResponse(true, "Activation successful"));
     }
 
     @GetMapping(value = "/hello")

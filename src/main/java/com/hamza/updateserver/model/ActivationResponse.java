@@ -10,5 +10,4 @@ import lombok.Setter;
 public class ActivationResponse {
     private boolean success;
     private String message;
-    private String licenseKey;
 }
