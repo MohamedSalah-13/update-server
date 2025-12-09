@@ -13,8 +13,8 @@
 
     <artifactId>update-server</artifactId>
     <name>update-server</name>
+<version>1.0.0</version>
     <description>update-server</description>
-
 
     <url/>
     <licenses>
