@@ -48,8 +48,8 @@ public class ActivationService {
         return activationRepository.findByMacAddress(macAddress);
     }
 
-    public void delete(Activation activation) {
-        activationRepository.delete(activation);
+    public void deleteById(Integer id) {
+        activationRepository.deleteById(id);
     }
 }
 

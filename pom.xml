@@ -13,7 +13,7 @@
 
     <artifactId>update-server</artifactId>
     <name>update-server</name>
-<version>1.0.0</version>
+    <version>1.0.0</version>
     <description>update-server</description>
 
     <url/>
@@ -59,11 +59,11 @@
         </dependency>
 
         <!-- PostgreSQL (للإنتاج) -->
-<!--        <dependency>-->
-<!--            <groupId>org.postgresql</groupId>-->
-<!--            <artifactId>postgresql</artifactId>-->
-<!--            <scope>runtime</scope>-->
-<!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.postgresql</groupId>-->
+        <!--            <artifactId>postgresql</artifactId>-->
+        <!--            <scope>runtime</scope>-->
+        <!--        </dependency>-->
         <dependency>
             <groupId>com.mysql</groupId>
             <artifactId>mysql-connector-j</artifactId>

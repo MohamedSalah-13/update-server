@@ -95,5 +95,12 @@ public class ActivationController {
         return ResponseEntity.ok(activationService.findByMachineId(machine_id).orElse(null));
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteById(@PathVariable Integer id) {
+        activationService.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
+
+
 }
 
